@@ -1,4 +1,5 @@
 import { object, string } from 'joi';
+import { CatEntity } from 'src/cats/cat.entity';
 
 export class UserDTO {
   username: string;
@@ -10,6 +11,7 @@ export class UserRO {
   username: string;
   created: Date;
   token?: string;
+  cats?: CatEntity
 }
 
 export const userSchema = object({

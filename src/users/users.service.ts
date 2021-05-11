@@ -15,7 +15,7 @@ export class UsersService {
   ) { }
 
   async findAll(): Promise<UserRO[]> {
-    const users = await this.userRepository.find();
+    const users = await this.userRepository.find({ relations: ['cats'] });
     return users.map(user => user.toResponse());
   }
 

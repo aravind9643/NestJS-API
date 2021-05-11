@@ -3,10 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { UserRO } from './user.dto';
+import { CatEntity } from 'src/cats/cat.entity';
+import { IdeaEntity } from 'src/idea/idea.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -25,8 +28,8 @@ export class UserEntity {
   @Column('text')
   password: string;
 
-  // @OneToMany(type => CatEntity, cat => cat.user)
-  // cats: CatEntity[];
+  @OneToMany(type => IdeaEntity, idea => idea.author)
+  ideas: IdeaEntity[];
 
   @BeforeInsert()
   async hassPassword(): Promise<void> {
@@ -35,7 +38,10 @@ export class UserEntity {
 
   toResponse(): UserRO {
     const { id, created, username } = this;
-    return { id, created, username };
+    const responseObject: any = { id, created, username };
+    if (this.ideas)
+      responseObject.ideas = this.ideas;
+    return responseObject;
   }
 
   async comparePassword(attempt: string): Promise<boolean> {

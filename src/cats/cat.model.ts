@@ -9,6 +9,7 @@ export class Cat {
 }
 
 export class CreateCatDTO {
+  id?: number;
   @IsNotEmpty()
   name: string;
   @IsNotEmpty()

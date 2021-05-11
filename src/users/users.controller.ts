@@ -9,7 +9,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) { }
 
-  // @Public()
+  @Public()
   @Get()
   async getUsers() {
     return this.usersService.findAll();

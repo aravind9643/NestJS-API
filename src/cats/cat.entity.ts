@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class CatEntity {
@@ -13,4 +13,8 @@ export class CatEntity {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column()
+  userId: string;
+
 }
