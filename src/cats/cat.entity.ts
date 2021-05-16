@@ -5,7 +5,7 @@ export class CatEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, })
   name: string;
 
   @Column()

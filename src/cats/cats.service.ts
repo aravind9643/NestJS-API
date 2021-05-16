@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException, UseFilters } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TypeOrmFilter } from 'src/common/filters/type-orm.filter';
 import { UserEntity } from 'src/users/user.entity';
 import { User } from 'src/users/users.service';
-import { Connection, Repository } from 'typeorm';
+import { Connection, QueryFailedError, Repository } from 'typeorm';
 import { CatEntity } from './cat.entity';
 import { Cat, CreateCatDTO } from './cat.model';
 @Injectable()
@@ -28,7 +29,6 @@ export class CatsService {
     this.ensurePermission(cat, userId)
     return cat;
   }
-
   async createCat(data: CreateCatDTO, userId: string) {
     const cat = this.catsRepository.create({ ...data, userId: userId });
     await this.catsRepository.save(cat);
