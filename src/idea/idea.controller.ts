@@ -4,7 +4,6 @@ import {
     Delete,
     Get,
     Param,
-    ParseIntPipe,
     Post,
     Put,
 } from '@nestjs/common';
@@ -21,7 +20,7 @@ export class IdeaController {
     }
 
     @Get(':id')
-    showIdea(@Param('id', ParseIntPipe) id, @User('id') userId) {
+    showIdea(@Param('id') id, @User('id') userId) {
         return this.ideaService.showIdea(id, userId);
     }
 
@@ -31,12 +30,12 @@ export class IdeaController {
     }
 
     @Put(':id')
-    async updateIdea(@Param('id', ParseIntPipe) id, @User('id') userId, @Body() idea: Partial<IdeaDTO>) {
+    async updateIdea(@Param('id') id, @User('id') userId, @Body() idea: Partial<IdeaDTO>) {
         return await this.ideaService.updateIdea(id, userId, idea);
     }
 
     @Delete(':id')
-    async deleteIdea(@Param('id', ParseIntPipe) id, @User('id') userId) {
+    async deleteIdea(@Param('id') id, @User('id') userId) {
         return await this.ideaService.deleteIdea(id, userId);
     }
 }

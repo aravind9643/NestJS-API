@@ -15,7 +15,7 @@ export class IdeaService {
     ) { }
 
     private toResponseObject(idea: IdeaEntity) {
-        return { ...idea, owner: idea.author.toResponse() }
+        return { ...idea, author: idea.author.toResponse() }
     }
 
     private ensureOwnerShip(idea: IdeaEntity, userId: string) {
@@ -25,12 +25,12 @@ export class IdeaService {
 
     async showIdeas(userId: string) {
         const user = await this.userRepository.findOne({ where: { id: userId } });
-        const ideas = await this.ideaRepository.find({ where: { owner: user }, relations: ['author'] });
+        const ideas = await this.ideaRepository.find({ where: { author: user }, relations: ['author', 'comments'] });
         return ideas.map(idea => this.toResponseObject(idea));
     }
 
     async showIdea(id: string, userId: string) {
-        const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author'] });
+        const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author', 'comments'] });
         this.ensureOwnerShip(idea, userId);
         return this.toResponseObject(idea);
     }
@@ -42,7 +42,7 @@ export class IdeaService {
         return this.toResponseObject(idea);
     }
 
-    async updateIdea(id: string, userId, data: Partial<IdeaDTO>) {
+    async updateIdea(id: string, userId: string, data: Partial<IdeaDTO>) {
         let idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author'] });
         if (!idea)
             throw new NotFoundException();
@@ -52,12 +52,12 @@ export class IdeaService {
         return this.toResponseObject(idea);
     }
 
-    async deleteIdea(id: string, userId) {
+    async deleteIdea(id: string, userId: string) {
         const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author'] });
         if (!idea)
             throw new NotFoundException();
         this.ensureOwnerShip(idea, userId);
-        await this.ideaRepository.delete(id);
+        await this.ideaRepository.remove(idea);
         return this.toResponseObject(idea);
     }
 }

@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.gaurd';
 import { ConfigModule } from '@nestjs/config';
 import { IdeaModule } from './idea/idea.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { IdeaModule } from './idea/idea.module';
     UsersModule,
     AuthModule,
     IdeaModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [

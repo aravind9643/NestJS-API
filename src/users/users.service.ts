@@ -15,12 +15,12 @@ export class UsersService {
   ) { }
 
   async findAll(): Promise<UserRO[]> {
-    const users = await this.userRepository.find({ relations: ['cats'] });
+    const users = await this.userRepository.find({ relations: ['ideas', 'bookmarks'] });
     return users.map(user => user.toResponse());
   }
 
   async findOne(username: string, returnPassword = false) {
-    const user = await this.userRepository.findOne({ where: { username } });
+    const user = await this.userRepository.findOne({ where: { username }, relations: ['ideas', 'bookmarks'] });
     return returnPassword ? user : user.toResponse();
   }
 
