@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.gaurd';
 import { Public } from 'src/common/decorators/public.decorator';
 import { User } from 'src/common/decorators/user.decorator';
@@ -11,8 +11,8 @@ export class UsersController {
 
   @Public()
   @Get()
-  async getUsers() {
-    return this.usersService.findAll();
+  async getUsers(@Query('page') page: number, @Query('limit') limit: number) {
+    return this.usersService.findAll(page, limit);
   }
 
   @Public()

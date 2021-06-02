@@ -1,5 +1,6 @@
 import { object, string } from 'joi';
 import { CatEntity } from 'src/cats/cat.entity';
+import { IdeaEntity } from 'src/idea/idea.entity';
 
 export class UserDTO {
   username: string;
@@ -11,7 +12,14 @@ export class UserRO {
   username: string;
   created: Date;
   token?: string;
-  cats?: CatEntity
+  cats?: CatEntity[];
+  bookmarks?: IdeaEntity[];
+  ideas?: IdeaEntity[];
+}
+
+export class UserListRO {
+  users: UserRO[];
+  count: number
 }
 
 export const userSchema = object({

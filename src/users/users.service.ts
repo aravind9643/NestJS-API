@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserDTO, UserRO } from './user.dto';
+import { UserDTO, UserListRO, UserRO } from './user.dto';
 import { UserEntity } from './user.entity';
 
 // This should be a real class/interface representing a user entity
@@ -14,9 +14,9 @@ export class UsersService {
     private userRepository: Repository<UserEntity>,
   ) { }
 
-  async findAll(): Promise<UserRO[]> {
-    const users = await this.userRepository.find({ relations: ['ideas', 'bookmarks'] });
-    return users.map(user => user.toResponse());
+  async findAll(page: number = 1, limit: number = 10): Promise<UserListRO> {
+    const [users, count] = await this.userRepository.findAndCount({ take: limit, skip: limit * (page - 1) });
+    return { users: users.map(user => user.toResponse()), count };
   }
 
   async findOne(username: string, returnPassword = false) {

@@ -34,7 +34,8 @@ export class AuthService {
     const token = await this.getJwtToken(data);
     const user = await this.usersService.findOne(username);
     if (user) {
-      return { ...user, ...token };
+      const { ideas, bookmarks, ...result } = user;
+      return { ...result, ...token };
     }
     return { ...data, ...token };
   }
