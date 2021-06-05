@@ -10,7 +10,7 @@ export class UserResolver {
     constructor(private usersService: UsersService, private commentService: CommentService) { }
 
     @Query()
-    async users(@Args('page') page: number, @Args('limit') limit: number) {
+    async UsersList(@Args('page') page: number, @Args('limit') limit: number) {
         return await this.usersService.findAll(page, limit);
     }
 

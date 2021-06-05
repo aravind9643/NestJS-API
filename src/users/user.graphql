@@ -7,13 +7,18 @@ type User {
   comments: [Comment!]
 }
 
+type UsersList {
+  users: [User!]
+  count: Int!
+}
+
 type Auth {
   username: String!
   token: String!
 }
 
 type Query {
-  users(page: Int, limit: Int): [User!]
+  UsersList(page: Int, limit: Int): UsersList!
   profile: User!
 }
 

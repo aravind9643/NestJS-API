@@ -15,10 +15,10 @@ export class UsersService {
     private userRepository: Repository<UserEntity>,
   ) { }
 
-  async findAll(page: number = 1, limit: number = 10): Promise<UserRO[]> {
+  async findAll(page: number = 1, limit: number = 10): Promise<UserListRO> {
     const [users, count] = await this.userRepository.findAndCount({ relations: ['ideas', 'bookmarks'], take: limit, skip: limit * (page - 1) });
-    // return { users: users.map(user => user.toResponse()), count };
-    return users.map(user => user.toResponse());
+    return { users: users.map(user => user.toResponse()), count };
+    // return users.map(user => user.toResponse());
   }
 
   async findOne(username: string, returnPassword = false) {
