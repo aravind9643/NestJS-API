@@ -9,7 +9,6 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) { }
 
-  @Public()
   @Get()
   async getUsers(@Query('page') page: number, @Query('limit') limit: number) {
     return this.usersService.findAll(page, limit);
@@ -19,6 +18,12 @@ export class UsersController {
   @Post('register')
   async register(@Body() data: UserDTO) {
     return this.usersService.register(data);
+  }
+
+  @Public()
+  @Post('login')
+  async login(@Body() data: UserDTO) {
+    return this.usersService.login(data);
   }
 
   @Get('profile')

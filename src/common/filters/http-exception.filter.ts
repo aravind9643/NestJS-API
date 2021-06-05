@@ -10,10 +10,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const request = ctx.getRequest<Request>();
         let message = (exception as any).message;
 
-        // Logger.error(message, (exception as any).stack, `${request.method} ${request.url}`);
-
         let status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-
         switch (exception.constructor) {
             case HttpException:
                 status = (exception as HttpException).getStatus();
@@ -25,7 +22,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
             default:
                 status = HttpStatus.INTERNAL_SERVER_ERROR
         }
-
         response.status(status)
             .json({
                 statusCode: status,

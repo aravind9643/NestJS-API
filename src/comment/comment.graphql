@@ -1,0 +1,16 @@
+type Comment {
+  id: String!
+  created: String!
+  comment: String!
+  # author: User
+  # idea: Idea
+}
+
+type Query {
+  comment(id: String!): Comment!
+}
+
+type Mutation {
+  createComment(id: String!, comment: String!): Comment!
+  deleteComment(id: String!): Comment!
+}

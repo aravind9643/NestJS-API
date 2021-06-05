@@ -16,7 +16,7 @@ export class IdeaController {
     constructor(private ideaService: IdeaService) { }
     @Get()
     showIdeas(@User('id') userId) {
-        return this.ideaService.showIdeas(userId);
+        return this.ideaService.showIdeasByUser(userId);
     }
 
     @Get(':id')

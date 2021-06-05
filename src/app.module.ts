@@ -11,11 +11,18 @@ import { JwtAuthGuard } from './auth/jwt-auth.gaurd';
 import { ConfigModule } from '@nestjs/config';
 import { IdeaModule } from './idea/idea.module';
 import { CommentModule } from './comment/comment.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { AuthGuard } from './common/gaurds/auth.guard';
 
 @Module({
   imports: [
     CatsModule,
     ConfigModule.forRoot(),
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      context: ({ req }) => ({ headers: req.headers })
+    }),
     TypeOrmModule.forRoot({
       // type: 'sqlite',
       // database: __dirname + '/test.sqlite',
@@ -38,13 +45,17 @@ import { CommentModule } from './comment/comment.module';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: HttpExceptionFilter,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: AuthGuard,
     },
   ],
 })

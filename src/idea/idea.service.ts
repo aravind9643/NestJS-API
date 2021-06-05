@@ -23,7 +23,12 @@ export class IdeaService {
             throw new HttpException('Incorrect user', HttpStatus.BAD_REQUEST);
     }
 
-    async showIdeas(userId: string) {
+    async showIdeas(page: number = 1, limit: number = 10) {
+        const ideas = await this.ideaRepository.find({ relations: ['author', 'comments'], take: limit, skip: limit * (page - 1) });
+        return ideas.map(idea => this.toResponseObject(idea));
+    }
+
+    async showIdeasByUser(userId: string) {
         const user = await this.userRepository.findOne({ where: { id: userId } });
         const ideas = await this.ideaRepository.find({ where: { author: user }, relations: ['author', 'comments'] });
         return ideas.map(idea => this.toResponseObject(idea));
