@@ -1,22 +1,27 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException, UseFilters } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from 'src/users/user.entity';
-import { User } from 'src/users/users.service';
-import { Connection, QueryFailedError, Repository } from 'typeorm';
-import { CatEntity } from './cat.entity';
-import { Cat, CreateCatDTO } from './cat.model';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UseFilters
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { UserEntity } from "src/users/user.entity";
+import { User } from "src/users/users.service";
+import { Connection, QueryFailedError, Repository } from "typeorm";
+import { CatEntity } from "./cat.entity";
+import { Cat, CreateCatDTO } from "./cat.model";
 @Injectable()
 export class CatsService {
-
   constructor(
     @InjectRepository(CatEntity)
     private catsRepository: Repository<CatEntity>,
-    private connection: Connection,
-  ) { }
+    private connection: Connection
+  ) {}
 
   private ensurePermission(cat: CatEntity, userId) {
     if (cat.userId !== userId)
-      throw new HttpException('Invalid user', HttpStatus.BAD_REQUEST);
+      throw new HttpException("Invalid user", HttpStatus.BAD_REQUEST);
   }
 
   async getCats(userId: string) {
@@ -25,8 +30,7 @@ export class CatsService {
 
   async getCat(id: number, userId: string) {
     const cat = await this.catsRepository.findOne({ where: { id } });
-    if (!cat)
-      throw new NotFoundException();
+    if (!cat) throw new NotFoundException();
     this.ensurePermission(cat, userId);
     return cat;
   }
@@ -39,8 +43,7 @@ export class CatsService {
 
   async updateCat(id: number, data: Partial<CreateCatDTO>, userId: string) {
     const cat = await this.catsRepository.findOne({ where: { id } });
-    if (!cat)
-      throw new NotFoundException();
+    if (!cat) throw new NotFoundException();
     this.ensurePermission(cat, userId);
     await this.catsRepository.update({ id }, data);
     return await this.catsRepository.findOne({ where: { id } });
@@ -48,8 +51,7 @@ export class CatsService {
 
   async deleteCat(id: number, userId: string) {
     const cat = await this.catsRepository.findOne({ where: { id } });
-    if (!cat)
-      throw new NotFoundException();
+    if (!cat) throw new NotFoundException();
     this.ensurePermission(cat, userId);
     await this.catsRepository.delete(id);
     return cat;

@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AppGateway } from 'src/app.gateway';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Repository } from 'typeorm';
 import { UserDTO, UserListRO, UserRO } from './user.dto';
@@ -13,6 +14,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    private appGateway: AppGateway
   ) { }
 
   async findAll(page: number = 1, limit: number = 10): Promise<UserListRO> {
@@ -32,6 +34,7 @@ export class UsersService {
       throw new HttpException('Invalid Username', HttpStatus.BAD_REQUEST);
     if (!user.comparePassword(password))
       throw new HttpException('Invalid Password', HttpStatus.BAD_REQUEST);
+    this.appGateway.server.emit("userLoggedIn", user);
     return user.toResponse(true);
   }
   async register(data: UserDTO): Promise<UserRO> {

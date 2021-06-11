@@ -14,6 +14,7 @@ import { CommentModule } from './comment/comment.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AuthGuard } from './common/gaurds/auth.guard';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { AuthGuard } from './common/gaurds/auth.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    AppGateway,
   ],
 })
 export class AppModule { }

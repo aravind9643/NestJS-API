@@ -8,10 +8,11 @@ import { UserResolver } from './user.resolver';
 import { IdeaEntity } from 'src/idea/idea.entity';
 import { CommentEntity } from 'src/comment/comment.entity';
 import { CommentService } from 'src/comment/comment.service';
+import { AppGateway } from '../app.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, CatEntity, IdeaEntity, CommentEntity])],
-  providers: [UsersService, UserResolver, CommentService],
+  providers: [UsersService, UserResolver, CommentService, AppGateway],
   exports: [UsersService],
   controllers: [UsersController],
 })
